@@ -57,3 +57,62 @@ The script uses several Python libraries. You can install them all with a single
 
 ```bash
 pip3 install pandas openpyxl xlrd lxml xlsxwriter
+````
+
+  * **pandas:** For data manipulation and analysis.
+  * **openpyxl:** For reading and writing modern `.xlsx` Excel files.
+  * **xlrd:** For reading older `.xls` Excel files (used as a fallback).
+  * **lxml:** For parsing XML-based Excel files (used as a fallback).
+  * **xlsxwriter:** For writing `.xlsx` files with enhanced formatting, like auto-adjusted column widths.
+
+## How to Use the Script (`SmartCare_Orders.py`)
+
+### Folder Structure
+
+1.  It's recommended to have a main project folder where `SmartCare_Orders.py` is located (e.g., `/Volumes/DK_DRIVE/SmartCare/Orders/`).
+2.  Inside this main folder, create a subfolder named `Orders_IN` (e.g., `/Volumes/DK_DRIVE/SmartCare/Orders/Orders_IN/`). This is where you will put the `.xlsx` files you prepared from the SmartCare EMR exports.
+      * *Note: The script uses the path `/Volumes/DK_DRIVE/SmartCare/Orders/Orders_IN/` as the hardcoded `input_base_dir`. If your `Orders_IN` folder is located elsewhere, you will need to adjust this variable within the `main_process_all_files` function in the script.*
+3.  When you run the script from its location (e.g., from `/Volumes/DK_DRIVE/SmartCare/Orders/`), it will automatically create an `Orders_OUT` subfolder within that same directory (e.g., `/Volumes/DK_DRIVE/SmartCare/Orders/Orders_OUT/`) and save the processed files there.
+
+### Running the Script
+
+1.  Open your terminal or command prompt.
+2.  Navigate to the directory where you saved `SmartCare_Orders.py` (e.g., `cd /Volumes/DK_DRIVE/SmartCare/Orders/`).
+3.  Run the script using Python 3:
+    ```bash
+    python3 SmartCare_Orders.py
+    ```
+
+### Input Files
+
+  * Place the medication order files you exported from SmartCare AND **re-saved as `.xlsx`** into the `Orders_IN` folder.
+  * The script will attempt to process all `.xlsx`, `.xls`, and `.xml` files it finds in this folder, but it's optimized for the re-saved `.xlsx` files due to the EMR's original export format issues.
+
+### Output Files
+
+For each processed input file (e.g., `InputFile.xlsx`), the script will generate two files in the `Orders_OUT` subfolder:
+
+1.  **`InputFile_OUT.xlsx`**: An Excel spreadsheet containing the extracted and classified orders, sorted by Type and then alphabetically by Medication Name. Column widths are auto-adjusted for better readability.
+2.  **`InputFile_OUT.txt`**: A text file summary formatted for quick review:
+      * Orders grouped by Type.
+      * Each medication line: `Med Name with dose, Abbreviated Frequency, Order Comments, End Date (if ending within 7 days)`
+      * "Abbreviated Frequency" is the content found within parentheses in the original 'Frequency' column. If no parentheses, this part will be blank in the text file.
+
+## Features of the Output
+
+  * **Clear Classification:** Medications are categorized into "Psychiatric Scheduled," "Psychiatric PRN," "Other Scheduled," and "Other PRN."
+  * **Logical Sorting:** Ensures easy review by grouping types and alphabetizing medication names (case-insensitively).
+  * **Excel Clarity:** Auto-adjusted column widths in the `.xlsx` file prevent data truncation (like `####` for dates).
+  * **TXT Summary:** The `.txt` file provides a quick-glance list.
+      * **Conditional End Dates:** Only displays the `End Date` if the medication order is due to end on the current day or within the next 6 days (a 7-day window from today). This helps flag orders needing imminent attention.
+      * **Focused Frequency:** The text file uses only the parenthetical part of the frequency (e.g., "QHS" from "Daily at Bedtime (QHS)") for brevity.
+
+## Important Disclaimer
+
+This script is provided "as-is" without any warranties. It was developed to address specific challenges with one EMR system and workflow. While it aims to improve accuracy and efficiency, it is crucial to **always independently verify all clinical information and medication orders.** Clinical judgment should always supersede any output from this tool. Use at your own risk and ensure compliance with all institutional and regulatory policies.
+
+## License
+
+This project is licensed under the MIT License. (See the `LICENSE` file for details).
+
+```
