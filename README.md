@@ -1,5 +1,7 @@
 # SmartCare EMR Order Processor
 
+**Read the story behind this project on Medium:** [Taming a "Smart" EMR with Code (and a Little AI Help)](https://medium.com/@pythonfordocs/taming-a-smart-emr-with-code-and-a-little-ai-help-cbccf263e59b)
+
 This Python script is designed to help clinicians process and review medication orders exported from the SmartCare EMR system. It aims to streamline workflow, improve clarity, and aid in patient safety by converting clunky EMR exports into user-friendly, sorted Excel spreadsheets and concise text summaries.
 
 This project was born out of the frustrating and time-consuming experiences with the SmartCare EMR, particularly its difficulties in managing and verifying complex medication orders for psychiatric patients.
